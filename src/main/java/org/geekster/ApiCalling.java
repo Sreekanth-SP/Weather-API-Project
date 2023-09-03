@@ -42,18 +42,43 @@ public class ApiCalling {
             while((readLine= in.readLine())!=null){
                 apiData.append(readLine);
             }
-            in.close();
 
+            try {
+                in.close();
+            }
+            catch (IOException e){
+                throw new RuntimeException(e);
+            }
+
+            System.out.println(apiData.toString());
             JSONObject jsonAPIResponse = new JSONObject(apiData.toString());
+
             System.out.println(jsonAPIResponse.get("latitude"));
             System.out.println(jsonAPIResponse.get("longitude"));
             System.out.println(jsonAPIResponse.get("generationtime_ms"));
             System.out.println(jsonAPIResponse.get("utc_offset_seconds"));
             System.out.println(jsonAPIResponse.get("timezone"));
             System.out.println(jsonAPIResponse.get("timezone_abbreviation"));
-            System.out.println(jsonAPIResponse.get("current_weather"));
-            System.out.println(jsonAPIResponse.get("hourly_units"));
             System.out.println(jsonAPIResponse.get("elevation"));
+            System.out.println(jsonAPIResponse.get("current_weather"));
+            System.out.println(jsonAPIResponse.get("hourly"));
+
+            JSONObject jsonAPIResponse1 = new JSONObject(jsonAPIResponse.get("hourly").toString());
+            // System.out.println(jsonAPIResponse1.get("temperature_2m"));
+
+            Object o1 = jsonAPIResponse1.get("temperature_2m");
+            String s1 = o1.toString();
+            s1 = s1.substring(1,s1.length()-1);
+
+            String[] strArray = null;
+            strArray = s1.split(",");
+
+            for(String s : strArray)
+            {
+                System.out.println(s);
+            }
+            //System.out.println(jsonAPIResponse.toString());
+
         }
         else{
             System.out.println("API call could not be made!!!");
